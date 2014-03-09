@@ -2,8 +2,6 @@
 from datetime import datetime, timedelta
 from pyicloud import PyiCloudService
 from acalendar.models import Calendar, Event
-from metrics.models import Metric
-
 
 def make_datetime(ical):
     return datetime(year=ical[1], month=ical[2], day=ical[3], hour=ical[4], minute=ical[5])
@@ -20,17 +18,9 @@ def icloud_calendar(calendar):
                 name=event["title"],
             )
         )
-
-        update_metrics = obj.description != event["pGuid"]
-
         obj.name = event["title"]
         obj.description = event["pGuid"]
         obj.begin = make_datetime(event["startDate"])
         obj.end = make_datetime(event["endDate"])
         obj.place = event["location"]
         obj.save()
-
-        if update_metrics:
-            if event["pGuid"] in CODE_METRICS:
-                Metric.checkin(CODE_METRICS[event["pGuid"]], obj.begin, delta=5)
-
