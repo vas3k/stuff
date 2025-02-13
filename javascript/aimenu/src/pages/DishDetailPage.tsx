@@ -45,7 +45,7 @@ const DishDetailPage = () => {
         {item.imageUrls && item.imageUrls.length > 0 ? (
           <Box sx={{ maxHeight: 600, overflow: 'auto' }}>
             <ImageList sx={{ width: '100%' }} cols={3} gap={8}>
-              {item.imageUrls.map((img, index))) => (
+              {item.imageUrls.map((img, index) => (
                 <ImageListItem key={index}>
                   <img
                     src={img}
